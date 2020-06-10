@@ -1,0 +1,50 @@
+
+data = {
+    "id": 1,
+    "first_name": "Gagandeep",
+    "last_name": "Singh",
+    "age": 25,
+    "gender": "Male",
+    "term": "Short Term",
+    "credit_score": 2.0,
+    "year_in_current_job": "1 year",
+    "home_ownership": "Home Mortgage",
+    "purpose": "Home Improvements",
+    "years_credit_history": 1.0,
+    "num_open_acc": 1
+}
+
+# data = {k:[v] for (k,v) in data.items()}
+# print(MLAPP().predict(data))
+
+# path('result/', views.result)
+# path('form/', views.customer_contact, name='myform'),
+
+
+# def myform(request):
+#     if request.method == 'POST':
+#         form = MyForm(request.POST)
+#         if form.is_valid():
+#             myform = form.save(commit=False)
+#     else:
+#         form = MyForm()
+
+# def customer_contact(request):
+#     if request.method == 'POST':
+#         form = CustomerForm(request.Post)
+#         if form.is_valid():
+#             first_name = form.cleaned_data['first_name']
+#             last_name = form.cleaned_data['last_name']
+#             age = form.cleaned_data['age']
+#             gender= form.cleaned_data['gender']
+#             term = form.cleaned_data['term']
+#             credit_score = form.cleaned_data['credit_score']
+#             year_in_current_job = form.cleaned_data['year_in_current_job']
+#             home_ownership = form.cleaned_data['home_ownership']
+#             purpose=form.cleaned_data['purpose']
+#             years_credit_history = form.cleaned_data['years_credit_history']
+#             num_open_acc = form.cleaned_data['num_open_acc']
+#             print(first_name, last_name)
+    
+#     form = CustomerForm()
+#     return render(request, '', {'form':form})
