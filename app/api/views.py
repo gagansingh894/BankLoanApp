@@ -2,13 +2,12 @@ from django.shortcuts import render, HttpResponse
 from django.http import JsonResponse
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
-from .__init__ import ml
 from .models import Customer
 from .serializers import CustomerSerializers
-# from .forms import CustomerForm
 from rest_framework.decorators import parser_classes
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
+from .__init__ import ml
 import json
 
 

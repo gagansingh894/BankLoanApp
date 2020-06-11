@@ -2,8 +2,8 @@ import os
 
 N = 200
 RANDOM_STATE = 42
-TEST_SIZE = 0.1
-MAX_DEPTH = 8
+TEST_SIZE = 0.2
+MAX_DEPTH = 10
 
 DROP_NA_COLUMN_LIST = ['Tax Liens', 'Bankruptcies', 'Maximum Open Credit', 'Years in current job']
 FEATURES_LABEL_ENCODER_COLUMN_LIST = ['Term', 'Home Ownership', 'Purpose']

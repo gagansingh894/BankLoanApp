@@ -7,5 +7,4 @@ router.register('api', views.CustomerView)
 urlpatterns = [
     path('', include(router.urls)),
     path('result', views.get_result)
-
     ]

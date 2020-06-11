@@ -1,4 +1,5 @@
 from config import *
+import os
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
@@ -6,6 +7,7 @@ from sklearn.preprocessing import LabelEncoder, OrdinalEncoder
 from sklearn.feature_selection import SelectFromModel
 from sklearn.linear_model import Lasso
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
+# from imblearn.under_sampling import RepeatedEditedNearestNeighbours
 import pickle
 from tqdm import tqdm
 
@@ -33,6 +35,7 @@ class Pipeline(object):
         self.oe_years_job = OrdinalEncoder()
         self.selected_columns = None
         self.model = model
+        self.undersampler = RepeatedEditedNearestNeighbours()
         self.predictions = None
         self.obj_savepath = OBJECTS_SAVE_PATH
 
@@ -74,14 +77,14 @@ class Pipeline(object):
         self.sel_ = SelectFromModel(Lasso(alpha=0.005, random_state=self.random_state))
         self.sel_.fit(self.X_train, self.y_train)
         self.selected_columns = self.colist[self.sel_.get_support()]
-        self.X_train[self.selected_columns]
+        self.X_train = self.X_train[self.selected_columns]
         return self
     
     def prepare_test_data(self):
         print('Transforming Test Data')
         self.y_test = self.le_loan_status.transform(self.y_test)
         
-        self.X_test[self.selected_columns]
+        self.X_test = self.X_test[self.selected_columns]
 
         for le,col in zip(self.le_list,self.features_le_col_list):
             self.X_test[col] = le.transform(self.X_test[col]).astype(int).astype(str)        
@@ -89,17 +92,21 @@ class Pipeline(object):
         self.X_test['Years in current job'] = self.oe_years_job.transform(self.X_test['Years in current job'].values.reshape(-1,1)).astype(int).astype(str)
         
         self.X_test['Number of Open Accounts'] = self.X_test['Number of Open Accounts'].astype(int).astype(str)
-
-        for col in self.numeric_impute_list:
-            self.X_test[col] = self.X_test[col].fillna(self.X_test[col].median())        
+        
+        self.X_test['Credit Score'] = self.X_test[col].fillna(self.X_test['Credit Score'].median())
         return self
     
+    # def undersample_data(self):
+    #     print('Applying undersampling')
+    #     self.X_train, self.y_train = self.undersampler.fit_resample(self.X_train, self.y_train)
+
     def fit(self, predict_flag=False, eval_flag=False):
         self.drop_data()
         self.split_data()
         self.prepare_train_data()
         self.feature_selection()
         self.prepare_test_data()
+        # self.undersample_data()
         self.model.fit(self.X_train, self.y_train)
         self.save_objects()
 
@@ -118,7 +125,7 @@ class Pipeline(object):
                         "oe_years_job.pickle", "selected_columns.pickle", "model_randomforestclassifier.pickle"]
 
         for i in tqdm(range(len(self.objs))):
-            self.pickle_out = open(self.obj_savepath + self.objs_name[i], 'wb')
+            self.pickle_out = open(os.path.join(self.obj_savepath, self.objs_name[i]), 'wb')
             pickle.dump(self.objs[i], self.pickle_out)
             self.pickle_out.close()
 
@@ -136,3 +143,6 @@ class Pipeline(object):
         print("F1 Score: {}".format(f1_score(self.y_test, self.predictions)))
         print()
         print(confusion_matrix(self.y_test, self.predictions))
+
+if __name__ == '__main__':
+    pass

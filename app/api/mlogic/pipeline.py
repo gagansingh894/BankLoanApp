@@ -7,6 +7,7 @@ from sklearn.preprocessing import LabelEncoder, OrdinalEncoder
 from sklearn.feature_selection import SelectFromModel
 from sklearn.linear_model import Lasso
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
+# from imblearn.under_sampling import RepeatedEditedNearestNeighbours
 import pickle
 from tqdm import tqdm
 
@@ -34,6 +35,7 @@ class Pipeline(object):
         self.oe_years_job = OrdinalEncoder()
         self.selected_columns = None
         self.model = model
+        self.undersampler = RepeatedEditedNearestNeighbours()
         self.predictions = None
         self.obj_savepath = OBJECTS_SAVE_PATH
 
@@ -94,12 +96,17 @@ class Pipeline(object):
         self.X_test['Credit Score'] = self.X_test[col].fillna(self.X_test['Credit Score'].median())
         return self
     
+    # def undersample_data(self):
+    #     print('Applying undersampling')
+    #     self.X_train, self.y_train = self.undersampler.fit_resample(self.X_train, self.y_train)
+
     def fit(self, predict_flag=False, eval_flag=False):
         self.drop_data()
         self.split_data()
         self.prepare_train_data()
         self.feature_selection()
         self.prepare_test_data()
+        # self.undersample_data()
         self.model.fit(self.X_train, self.y_train)
         self.save_objects()
 
