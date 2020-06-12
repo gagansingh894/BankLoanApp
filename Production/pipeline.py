@@ -133,6 +133,7 @@ class Pipeline(object):
     def predict(self):
         print('Making Predictions')        
         self.predictions = self.model.predict(self.X_test)
+        print(pd.Series(self.predictions).value_counts())
         print()
     
     def evaluation(self):
