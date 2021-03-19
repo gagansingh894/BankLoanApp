@@ -1,6 +1,6 @@
 asgiref==3.2.7
 Django==3.0.7
-djangorestframework==3.11.0
+djangorestframework==3.11.2
 imbalanced-learn==0.7.0
 imblearn==0.0
 joblib==0.15.1
